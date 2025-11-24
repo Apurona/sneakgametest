@@ -93,12 +93,53 @@ function initializeGame() {
 }
 
 function draw() {
-    // ⭐ 変更: gameState に応じて描画内容を切り替える
-    if (gameState === 'title') {
-        drawTitleScreen();
-    } else {
-        // ⭐ 変更: ゲームプレイ中/ゲームオーバー時の背景を白に
-        background(255); 
+    // ⭐ 変更: gameState に応じて描画内容を切り替える
+    if (gameState === 'title') {
+        drawTitleScreen();
+    } else {
+        // ⭐ 変更: ゲームプレイ中/ゲームオーバー時の背景を白に
+        background(255); 
+        
+        if (gameState === 'playing') {
+            // =======================================================
+            // ⭐ 描画順序の変更
+            // 1. スネークの移動 (時間制御)
+            // 2. フードの描画 (線より前に描画)
+            // 3. スネークの描画 (線より前に描画)
+            // 4. ボードの描画 (線)
+            // 5. スコア、ボタンの描画
+            // =======================================================
+            
+            // **1. スネークの移動** (一定時間ごとに実行)
+            if (millis() - lastMoveTime > MOVE_INTERVAL) {
+                updateSnake();
+                lastMoveTime = millis();
+            }
+
+            // **2. フードの描画 (先に描画する)**
+            drawFood();
+
+            // **3. スネークの描画 (先に描画する)**
+            drawSnake();
+
+            // **4. ゲームボードの描画 (線)**
+            drawBoard(); 
+
+            // **5. スコアの描画**
+            drawScore();
+            
+        } else if (gameState === 'gameover') {
+            // **ゲームボードの描画 (線)**
+            drawBoard(); 
+            
+            // **ゲームオーバー画面**
+            drawGameOver();
+        }
+        
+        // **操作ボタンの描画** (ゲーム状態に関わらず描画)
+        drawButtons();
+    }
+}
         
         // ボードの描画 (白背景に合わせた色に変更)
 function drawBoard() {
