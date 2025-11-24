@@ -100,8 +100,22 @@ function draw() {
         // ⭐ 変更: ゲームプレイ中/ゲームオーバー時の背景を白に
         background(255); 
         
-        // **ゲームボードの描画** (白背景の上にマス目を描画)
-        drawBoard(); 
+        // ボードの描画 (白背景に合わせた色に変更)
+function drawBoard() {
+    noFill();
+    stroke(200); // 枠線は薄い灰色
+    strokeWeight(1); // 線の太さを標準に戻す
+    
+    // ⭐ 削除: ボード全体の枠線 ( rect(0, 0, BOARD_WIDTH, BOARD_HEIGHT); )
+
+    // マス目の描画 (補助線)
+    for (let i = 0; i < GRID_SIZE; i++) {
+        for (let j = 0; j < GRID_SIZE; j++) {
+            // 各マス目を描画することで、マス目がきれいに区切られる
+            rect(i * CELL_SIZE, j * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+        }
+    }
+}
 
         if (gameState === 'playing') {
             // **スネークの移動** (一定時間ごとに実行)
